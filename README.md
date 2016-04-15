@@ -10,7 +10,5 @@ High performance string matching algorithm
 Byungkwon Choi, JongWook Chae, Muhammad Jamshed, KyoungSoo Park, and Dongsu Han, <i>DFC: Accelerating String Pattern Matching for Network Applications</i>, NSDI 2016 [<a href="http://ina.kaist.ac.kr/~dongsuh/paper/nsdi16-paper-choi.pdf">PDF</a>]
 
 
-# Author
-Byungkwon Choi
-
-http://ina.kaist.ac.kr/~brad
+# Contact
+Byungkwon Choi (nfsp3k at gmail.com , http://ina.kaist.ac.kr/~brad)
