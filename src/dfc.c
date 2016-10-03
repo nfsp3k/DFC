@@ -1688,7 +1688,6 @@ static int Verification_CT1(VERIFI_ARGUMENT)
 	int i;
 	for(i = 0; i < dfc->CompactTable1[*(buf-2)].cnt; i++){
 		PID_TYPE pid = dfc->CompactTable1[*(buf-2)].pid[i];
-		DFC_PATTERN *mlist = dfc->dfcMatchList[pid];
 
         ACTION_FOR_MATCH;
 	}
@@ -1726,7 +1725,6 @@ static int Verification_CT2(VERIFI_ARGUMENT)
 			}else{
 				for(j = 0; j < dfc->CompactTable2[crc].array[i].cnt; j++){
                     PID_TYPE pid = dfc->CompactTable2[crc].array[i].pid[j];
-                    DFC_PATTERN *mlist = dfc->dfcMatchList[pid];
 
                     ACTION_FOR_MATCH;
 				}
@@ -1746,7 +1744,6 @@ static int Verification_CT2(VERIFI_ARGUMENT)
 							PID_CNT_TYPE l;
 							for(l = 0; l < dfc->CompactTable2[crc].array[i].CompactTable[crc2].array[k].cnt; l++){
 								PID_TYPE pid = dfc->CompactTable2[crc].array[i].CompactTable[crc2].array[k].pid[l];
-								DFC_PATTERN *mlist = dfc->dfcMatchList[pid];
 
                                 ACTION_FOR_MATCH;
 							}
@@ -1798,7 +1795,6 @@ static int Verification_CT4_7(VERIFI_ARGUMENT)
 			}else{
 				for(j = 0; j < dfc->CompactTable4[crc].array[i].cnt; j++){
                     PID_TYPE pid = dfc->CompactTable4[crc].array[i].pid[j];
-                    DFC_PATTERN *mlist = dfc->dfcMatchList[pid];
 
                     ACTION_FOR_MATCH;
 				}
@@ -2031,7 +2027,6 @@ int DFC_Search(SEARCH_ARGUMENT)
         int i;
         for(i = 0; i < dfc->CompactTable1[buf[buflen-1]].cnt; i++){
             PID_TYPE pid = dfc->CompactTable1[buf[buflen-1]].pid[i];
-			DFC_PATTERN *mlist = dfc->dfcMatchList[pid];
 
             ACTION_FOR_MATCH;
         }
