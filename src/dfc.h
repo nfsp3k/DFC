@@ -132,7 +132,6 @@ typedef struct _dfc_pattern
 
     uint32_t             sids_size;
     PID_TYPE            *sids;      // external id (unique)
-    PID_TYPE             pid;       // external id ()
     PID_TYPE             iid;       // internal id (used in DFC library only)
 
 } DFC_PATTERN;
@@ -144,7 +143,6 @@ typedef struct {
     DFC_PATTERN   ** dfcMatchList;
 
     int          numPatterns;
-    PID_TYPE     max_pid;
 
 	/* Direct Filter (DF1) for all patterns */
     uint8_t DirectFilter1[DF_SIZE_REAL];
@@ -201,7 +199,7 @@ typedef enum _dfcDataType
 
 /****************************************************/
 DFC_STRUCTURE * DFC_New (void);
-int DFC_AddPattern (DFC_STRUCTURE *dfc, unsigned char *pat, int n, int nocase, PID_TYPE pid, PID_TYPE sid);
+int DFC_AddPattern (DFC_STRUCTURE *dfc, unsigned char *pat, int n, int nocase, PID_TYPE sid);
 int DFC_Compile(DFC_STRUCTURE *dfc);
 
 int DFC_Search(SEARCH_ARGUMENT);

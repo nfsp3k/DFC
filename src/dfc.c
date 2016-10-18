@@ -47,7 +47,7 @@ static void * DFC_REALLOC(void *p, uint16_t n, dfcDataType type, dfcMemoryType t
 static void DFC_FREE(void *p, int n, dfcMemoryType type);
 static void * DFC_MALLOC(int n, dfcMemoryType type );
 static void Build_pattern(DFC_PATTERN *p, uint8_t *flag, uint8_t *temp, uint32_t i, int j, int k);
-static inline DFC_PATTERN *DFC_InitHashLookup(DFC_STRUCTURE *ctx, uint8_t *pat, uint16_t patlen, PID_TYPE pid);
+static inline DFC_PATTERN *DFC_InitHashLookup(DFC_STRUCTURE *ctx, uint8_t *pat, uint16_t patlen);
 static inline int DFC_InitHashAdd(DFC_STRUCTURE *ctx, DFC_PATTERN *p);
 /*************************************************************************************/
 
@@ -195,16 +195,14 @@ void DFC_FreeStructure(DFC_STRUCTURE *dfc){
 * \param pat    Pointer to the pattern
 * \param n      Pattern length
 * \param nocase Flag for case-sensitivity (0 means case-sensitive, 1 means the opposite)
-* \param pid    Pattern id
-* \param sid    Internal id
+* \param sid    External id
 *
 * \retval   0 On success to add new pattern.
 * \retval   1 On success to add sid.
-* \retval  -1 On failure.
 */
-int DFC_AddPattern (DFC_STRUCTURE * dfc, unsigned char *pat, int n, int nocase, PID_TYPE pid, PID_TYPE sid)
+int DFC_AddPattern (DFC_STRUCTURE * dfc, unsigned char *pat, int n, int nocase, PID_TYPE sid)
 {
-    DFC_PATTERN * plist = DFC_InitHashLookup(dfc, pat, n, pid);
+    DFC_PATTERN * plist = DFC_InitHashLookup(dfc, pat, n);
 
     if(plist == NULL){
         plist = (DFC_PATTERN *) DFC_MALLOC(sizeof (DFC_PATTERN), DFC_MEMORY_TYPE__PATTERN);
@@ -223,14 +221,10 @@ int DFC_AddPattern (DFC_STRUCTURE * dfc, unsigned char *pat, int n, int nocase, 
 
         plist->n      = n;
         plist->nocase = nocase;
-        plist->pid    = pid;
         plist->iid    = dfc->numPatterns; // internal id
         plist->next   = NULL;
 
         DFC_InitHashAdd(dfc, plist);
-
-        if(dfc->max_pid < pid)
-            dfc->max_pid = pid;
 
         /* sid update */
         plist->sids_size = 1;
@@ -239,34 +233,30 @@ int DFC_AddPattern (DFC_STRUCTURE * dfc, unsigned char *pat, int n, int nocase, 
         plist->sids[0] = sid;
 
         /* Add this pattern to the list */
-        //plist->next      = dfc->dfcPatterns;
-        //dfc->dfcPatterns = plist;
         dfc->numPatterns++;
+
         return 0;
     }else{
         int found = 0;
         uint32_t x = 0;
+
         for (x = 0; x < plist->sids_size; x++) {
             if (plist->sids[x] == sid) {
                 found = 1;
                 break;
             }
         }
+
         if (!found) {
             PID_TYPE *sids = (PID_TYPE *)DFC_REALLOC(plist->sids, plist->sids_size + 1,
                                                      DFC_PID_TYPE, DFC_MEMORY_TYPE__PATTERN);
             plist->sids = sids;
             plist->sids[plist->sids_size] = sid;
             plist->sids_size++;
-            //SCLogInfo("p->sids_size %u", p->sids_size);
-            //SCLogInfo("MPM added %u:%u (append)", pid, sid);
-        } else {
-            //SCLogInfo("rule %u already part of pid %u", sid, pid);
         }
+
         return 1;
     }
-
-  return -1;
 }
 
 
@@ -883,7 +873,7 @@ int DFC_Compile(DFC_STRUCTURE* dfc)
     }
 #endif
 	min_pattern_interval = 32;
-	printf("Extracting Position : %d/%d\n", min_pattern_interval, pattern_interval);
+	//printf("Extracting Position : %d/%d\n", min_pattern_interval, pattern_interval);
 
 
 
@@ -2013,18 +2003,15 @@ int DFC_Search(SEARCH_ARGUMENT)
 
 	uint8_t *DirectFilter1 = dfc->DirectFilter1;
 
-	/* Process */
 	for (i = 0; i < buflen - 1; i++) {
 		DTYPE data = *(uint16_t*)(&buf[i]);
 		BTYPE index = BINDEX(data);
 		BTYPE mask = BMASK(data);
 
-		//matches++;
 		if (unlikely(DirectFilter1[index] & mask)) {
 			matches = Progressive_Filtering(PROGRE_PARAMETER);
-			//matches++;
 		}
-	} /* for (i=0; i<buflen; i++) */
+	} 
 
 	/* It is needed to check last 1 byte from payload */
     if(dfc->cDF0[buf[buflen-1]]){
@@ -2296,7 +2283,7 @@ static inline uint32_t DFC_InitHashRaw(uint8_t *pat, uint16_t patlen)
  *
  */
 static inline DFC_PATTERN *DFC_InitHashLookup(DFC_STRUCTURE *ctx, uint8_t *pat,
-                                              uint16_t patlen, PID_TYPE pid)
+                                              uint16_t patlen)
 {
     uint32_t hash = DFC_InitHashRaw(pat, patlen);
 
@@ -2306,7 +2293,7 @@ static inline DFC_PATTERN *DFC_InitHashLookup(DFC_STRUCTURE *ctx, uint8_t *pat,
 
     DFC_PATTERN *t = ctx->init_hash[hash];
     for ( ; t != NULL; t = t->next) {
-        if (t->pid == pid)
+        if (!strcmp((char*)t->casepatrn, (char*)pat))
             return t;
     }
 
