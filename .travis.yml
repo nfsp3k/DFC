@@ -37,3 +37,6 @@ install:
 
 script:
   - bash .buildtest.sh
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
