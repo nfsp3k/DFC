@@ -1,0 +1,39 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ENTRY_H	entry.h	2;"	d
+Entry	entry.h	/^struct Entry{$/;"	s
+MATCH_FUNC_H	match_func.h	2;"	d
+MAX_BUF	test.c	14;"	d	file:
+SCMEMCMP_BYTES	match_func.c	7;"	d	file:
+SCMemcmp	match_func.c	/^static inline int SCMemcmp(const unsigned char *s1, const unsigned char *s2, size_t len)$/;"	f	file:
+ac_match	match_func.c	/^int ac_match( void *id, void *tree, int index, void * data, void * neg_list)$/;"	f
+ac_struct	entry.h	/^    ACSM_STRUCT2 *ac_struct;$/;"	m	struct:Entry
+caseSensitive	entry.h	/^    int * caseSensitive; \/\/ 0: case-insensitive, 1: case-sensitive$/;"	m	struct:Entry
+constructMPMStructs	test.c	/^void constructMPMStructs(struct Entry *lst, int num){$/;"	f
+contents	entry.h	/^    char ** contents;$/;"	m	struct:Entry
+detection	test.c	/^void detection(struct Entry *lst, int num){$/;"	f
+dfc_match	match_func.c	/^void dfc_match(unsigned char *pat, uint32_t *sids, uint32_t sids_cnt){$/;"	f
+dfc_struct	entry.h	/^    DFC_STRUCTURE *dfc_struct;$/;"	m	struct:Entry
+frees	test.c	/^void frees(char ** arr, int size){$/;"	f
+genText	test.c	/^void genText(struct Entry *lst, int *num){$/;"	f
+isDirectory	test.c	/^int isDirectory(const char *path)$/;"	f
+likely	match_func.c	9;"	d	file:
+loadAndGen	test.c	/^struct Entry * loadAndGen(int argc, char **argv, int *num){$/;"	f
+loadRules	test.c	/^struct Entry * loadRules(int argc, char **argv, int *num){$/;"	f
+loadRulesDir	test.c	/^struct Entry * loadRulesDir(char **argv, int *num){$/;"	f
+loadRulesRegular	test.c	/^struct Entry * loadRulesRegular(char *filePath, int *num){$/;"	f
+main	test.c	/^int main(int argc, char **argv){$/;"	f
+numOfContents	entry.h	/^    int numOfContents;$/;"	m	struct:Entry
+numOfRules	entry.h	/^    int numOfRules;$/;"	m	struct:Entry
+parseContentOptions	test.c	/^void parseContentOptions(struct Entry *lst, int *num){$/;"	f
+payloadLen	entry.h	/^    int payloadLen;$/;"	m	struct:Entry
+ruleFileName	entry.h	/^    char * ruleFileName;$/;"	m	struct:Entry
+rules	entry.h	/^    char ** rules;$/;"	m	struct:Entry
+runMPM	test.c	/^void runMPM(struct Entry *lst, int num){$/;"	f
+showsResult	test.c	/^void showsResult(int mAC, int mDFC){$/;"	f
+testPayload	entry.h	/^    char *testPayload;$/;"	m	struct:Entry
+unlikely	match_func.c	12;"	d	file:

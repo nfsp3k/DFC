@@ -9,7 +9,7 @@
 /*   Func Argument - to define action for matching  */
 /****************************************************/
 #define ARGUMENT_FOR_MATCH \
-                        void (*Match)(unsigned char *, uint32_t *, uint32_t)
+                        int (*Match)(unsigned char *, uint32_t *, uint32_t)
 
 #define SEARCH_ARGUMENT \
                         DFC_STRUCTURE *dfc, \
@@ -41,8 +41,8 @@
                         dfc, buf, matches, Match, starting_point
 
 #define ACTION_FOR_MATCH \
-        Match(mlist->casepatrn, mlist->sids, mlist->sids_size);\
-        matches++;
+        Match(mlist->casepatrn, mlist->sids, mlist->sids_size); \
+        matches += mlist->sids_size;
 
 /****************************************************/
 

@@ -7,7 +7,7 @@
 
 /*************************************************************************************/
 #define INIT_HASH_SIZE 65536
-#define RECURSIVE_BOUNDARY 10
+#define RECURSIVE_BOUNDARY 5
 /*************************************************************************************/
 
 /*************************************************************************************/
@@ -202,7 +202,8 @@ void DFC_FreeStructure(DFC_STRUCTURE *dfc){
 */
 int DFC_AddPattern (DFC_STRUCTURE * dfc, unsigned char *pat, int n, int nocase, PID_TYPE sid)
 {
-    DFC_PATTERN * plist = DFC_InitHashLookup(dfc, pat, n);
+    //DFC_PATTERN * plist = DFC_InitHashLookup(dfc, pat, n);
+    DFC_PATTERN * plist = NULL;
 
     if(plist == NULL){
         plist = (DFC_PATTERN *) DFC_MALLOC(sizeof (DFC_PATTERN), DFC_MEMORY_TYPE__PATTERN);
@@ -1967,20 +1968,21 @@ static inline int Progressive_Filtering(PROGRE_ARGUMENT)
                 //}
             }
 
-            //DTYPE data8 = *(uint16_t*)(&buf[4]);
-            //BTYPE index8 = BINDEX(data8);
-            //BTYPE mask8 = BMASK(data8);
+            DTYPE data8 = *(uint16_t*)(&buf[4]);
+            BTYPE index8 = BINDEX(data8);
+            BTYPE mask8 = BMASK(data8);
 
-            //if (unlikely(mask8 & dfc->ADD_DF_8_1[index8])) {
-                //data8 = *(uint16_t*)(&buf[2]);
-                //index8 = BINDEX(data8);
-                //mask8 = BMASK(data8);
-                //if (unlikely(mask8 & dfc->ADD_DF_8_2[index8])) {
-                if ((rest_len >= 8)) {
-                    matches = Verification_CT8_plus(VERIFI_PARAMETER);
-                    //matches ++;
+            if (unlikely(mask8 & dfc->ADD_DF_8_1[index8])) {
+                data8 = *(uint16_t*)(&buf[2]);
+                index8 = BINDEX(data8);
+                mask8 = BMASK(data8);
+                if (unlikely(mask8 & dfc->ADD_DF_8_2[index8])) {
+                    if ((rest_len >= 8)) {
+                        matches = Verification_CT8_plus(VERIFI_PARAMETER);
+                        //matches ++;
+                    }
                 }
-            //}
+            }
         }
     }
 #else
