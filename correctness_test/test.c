@@ -14,7 +14,7 @@
 
 #define MAX_BUF 3000
 #define INPUT_SIZE 1000000 // byte
-#define RANDOM_TEXT 0 // 0: no random, 1: random
+#define RANDOM_TEXT 1 // 0: no random, 1: random
 #define TEXT_SIZE 1500 // MUST be multiples of 4
 
 struct Entry * loadAndGen(int argc, char **argv, int * num);
