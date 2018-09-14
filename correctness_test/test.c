@@ -14,7 +14,7 @@
 
 #define MAX_BUF 3000
 #define INPUT_SIZE 1000000 // byte
-#define RANDOM_TEXT 1 // 0: no random, 1: random
+#define RANDOM_TEXT 0 // 0: no random, 1: random
 #define TEXT_SIZE 1500 // MUST be multiples of 4
 
 struct Entry * loadAndGen(int argc, char **argv, int * num);
@@ -86,6 +86,7 @@ void detection(struct Entry *lst, int num){
         // 1. run AC
         gettimeofday(&tv_begin, NULL);
         for (j = 0; j < lst[i].numOfPayload; j++){
+        //for (j = 0; j < 1; j++){
             int start_state = 0;
             m_ac += acsmSearch2(lst[i].ac_struct, (unsigned char*)lst[i].testPayload[j], 
                                                 lst[i].payloadLen, ac_match, NULL, &start_state);
@@ -96,6 +97,7 @@ void detection(struct Entry *lst, int num){
         // 2. run DFC
         gettimeofday(&tv_begin, NULL);
         for (j = 0; j < lst[i].numOfPayload; j++){
+        //for (j = 0; j < 1; j++){
             m_dfc += DFC_Search(lst[i].dfc_struct, (unsigned char*)lst[i].testPayload[j], 
                                                 lst[i].payloadLen, dfc_match);
         }
@@ -112,7 +114,7 @@ void detection(struct Entry *lst, int num){
         if (ac_gbps != 0 && min_improvement > dfc_gbps/ac_gbps)
             min_improvement = dfc_gbps/ac_gbps;
 
-        printf("[%s][%s][%.1fx] %.3f Gbps - %10d  vs  %.3f Gbps - %10d  (%5d, %s)\n", 
+        printf("[%s][%s][%2.1fx] %.3f Gbps - %10d  vs  %.3f Gbps - %10d  (%5d, %s)\n", 
                         (m_ac == m_dfc)? "SUCC" : "FAIL", 
                         (dfc_gbps >= ac_gbps)? "FAST": "SLOW",
                         (ac_gbps != 0)? dfc_gbps/ac_gbps : 0.0,
@@ -141,12 +143,8 @@ void constructMPMStructs(struct Entry *lst, int num){
         // 1-2. constructs DFC structure
         lst[i].dfc_struct = DFC_New();
 
+        //printf("\n");
         for (j = 0; j < lst[i].numOfContents; j++){
-        //for (j = 0; j < 17; j++){
-            //if(j != 3 && j != 16)
-                //continue;
-
-            //printf("pat: %s (id: %d)(no case sensitive: %d)\n", lst[i].contents[j], j,lst[i].noCase[j]);
             // 2-1. Add pattern to AC structure
             acsmAddPattern2(lst[i].ac_struct, (unsigned char*)lst[i].contents[j], strlen(lst[i].contents[j]), lst[i].noCase[j], 0, 0, 0, NULL, j);
             
