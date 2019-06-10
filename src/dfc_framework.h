@@ -9,7 +9,7 @@
 /*   Func Argument - to define action for matching  */
 /****************************************************/
 #define ARGUMENT_FOR_MATCH \
-                        int (*Match)(unsigned char *, uint32_t *, uint32_t)
+                        void (*Match)(unsigned char *, uint32_t *, uint32_t)
 
 #define SEARCH_ARGUMENT \
                         DFC_STRUCTURE *dfc, \
